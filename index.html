@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' href='style.css'>
+    <!-- <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" /> -->
+</head>
+
+<body>
+    <div class="grid">
+        <canvas id="board" class="game-board"></canvas>
+        <div class="right-column">
+            <div>
+                <h1>TETRIS</h1>
+                <p>Score: <span id="score">0</span></p>
+                <p>Lines: <span id="lines">0</span></p>
+                <p>Level: <span id="level">0</span></p>
+                <canvas id="next" class="next"></canvas>
+            </div>
+
+            <button onclick="userInit()" class="play-button">Play</button>
+        </div>
+        <div class="ranking-column">
+            <div>
+                <h3 style="text-align: center;">USER RANKING </h3>
+                <div id="rank">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="board.js"></script>
+    <script type="text/javascript" src="const.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="piece.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var tableStruct = "<table><thead><tr><th><button onclick='idSort()'>ID</button></th><th><button onclick='numSort()'>SCORE</button></th><th><button onclick='numSort()'>LINES</button></th><th><button onclick='numSort()'>LEVEL</button></th></tr></thead>"
+            var loc = document.getElementById("rank");
+            if (localStorage.getItem("Rank") === null) {
+                loc.innerHTML = tableStruct + "<tbody><tr><td>Empty</td> <td>Empty</td><td>Empty</td><td>Empty</td> </tr></tbody></table>";
+            } else {
+                var datas = JSON.parse(localStorage.getItem("Rank"));
+                //console.log(datas);
+                var tmp = tableStruct + "<tbody>";
+                for (var idx in datas) {
+                    tmp += "<tr><td> " + datas[idx].id + "</td><td>" + datas[idx].score + "</td><td>" + datas[idx].clearedLines + "</td><td>" + datas[idx].level + "</td></tr>";
+                }
+                tmp += "</tbody></table>"
+                loc.innerHTML = tmp;
+            }
+            //바둑판 모양 그리기
+            ctx.strokeStyle = 'silver';
+            ctx.lineWidth = 0.01;
+            for (var c = 0; c <= endX; c++) {
+                for (var r = 0; r <= endY; r++) {
+                    ctx.strokeRect(c, r, 1, 1);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
